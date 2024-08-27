@@ -73,18 +73,34 @@ app.MapRazorPages();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+    try
+    {
+        //create User date
+        List<string> passwords = new List<string>
+        { "ctu@2019", "ctu@2020", "ctu@2021", "ctu@2022"};
+        Dictionary<string, string> userDatas = new Dictionary<string, string>()
+        {
+            { "CEOMikeLud", "michaelLudick.Admin@gmail.com" }, 
+            {"MDALbertLud","AlbertlLudick.Admin@gmail.com" }, 
+            {"Jasmine","Jasmine.Admin@gmail.com" }
+        };
 
-    //try
-    //{
-    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-    var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
-    var roleSeeder = services.GetRequiredService<IRoleSeeder>();
-    await roleSeeder.SeedRolesAsync(roleManager);
-    //}
-    //catch (Exception ex)
-    //{
-    //    // Handle errors
-    //}
+        //register service for DB tables
+        var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
+    
+        //register service for interfaces
+        var roleSeeder = services.GetRequiredService<IRoleSeeder>();
+        var UserSeer = services.GetRequiredService<IUserSeeder>();
+    
+        //call Methods from service
+        await UserSeer.SeedUsersAsync(userManager, roleManager, userDatas, passwords);
+        await roleSeeder.SeedRolesAsync(roleManager);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex);
+    }
 }
 
 app.Run();
