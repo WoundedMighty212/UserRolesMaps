@@ -15,15 +15,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddRazorPages(); // Add this line to register Razor Pages
 
-//builder.Services.AddDefaultIdentity<IdentityUser>();
-    //.AddRoles<IdentityRole>()
-    //.AddRoleManager<RoleManager<IdentityRole>>();
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>
+    (options => options.SignIn.RequireConfirmedAccount = true)
+    .AddUserManager<UserManager<IdentityUser>>()
+    .AddRoles<IdentityRole>()
+    .AddRoleManager<RoleManager<IdentityRole>>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// Configure Identity with roles
-builder.Services.AddIdentity<IdentityUser, ApplicationRole>(options =>
+builder.Services.Configure<IdentityOptions>(options =>
 {
-    // Configure Identity options here if needed
+    // Password settings
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = true;
@@ -31,18 +32,18 @@ builder.Services.AddIdentity<IdentityUser, ApplicationRole>(options =>
     options.Password.RequiredLength = 6;
     options.Password.RequiredUniqueChars = 1;
 
+    // Lockout settings
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
 
+    // User settings
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = true;
+
+    // Sign-in settings
     options.SignIn.RequireConfirmedAccount = true;
-}).AddUserManager<UserManager<IdentityUser>>()
-  .AddRoleManager<RoleManager<ApplicationRole>>()
- .AddRoles<ApplicationRole>()
- .AddEntityFrameworkStores<ApplicationDbContext>()
-  .AddDefaultTokenProviders();
+});
 
 builder.Services.AddControllersWithViews();
 // Register the IRoleSeeder implementation
