@@ -4,6 +4,5 @@ namespace UserRolesMaps.Models
 {
     public class ApplicationRole : IdentityRole
     {
-
     }
 }
