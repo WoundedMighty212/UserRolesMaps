@@ -6,7 +6,7 @@ namespace UserRolesMaps.Services
 {
     public class UserSeeder : IUserSeeder
     {
-        public async Task SeedUsersAsync(UserManager<IdentityUser> userManager, RoleManager<ApplicationRole> roleManager, Dictionary<string, string> userData, List<string> passwords)
+        public async Task SeedUsersAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, Dictionary<string, string> userData, List<string> passwords)
         {
             int i = 0;
             List<IdentityUser> userList = new List<IdentityUser>();
@@ -34,7 +34,7 @@ namespace UserRolesMaps.Services
                         else
                         {
                             // Optionally create the role if it doesn't exist
-                            await roleManager.CreateAsync(new ApplicationRole("Admin"));
+                            await roleManager.CreateAsync(new IdentityRole("Admin"));
                             await userManager.AddToRoleAsync(user, "Admin");
                         }
                     }

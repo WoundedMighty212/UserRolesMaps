@@ -15,9 +15,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddRazorPages(); // Add this line to register Razor Pages
 
-//builder.Services.AddDefaultIdentity<IdentityUser>()
-//    .AddRoles<IdentityRole>()
-//    .AddRoleManager<RoleManager<IdentityRole>>()
+//builder.Services.AddDefaultIdentity<IdentityUser>();
+    //.AddRoles<IdentityRole>()
+    //.AddRoleManager<RoleManager<IdentityRole>>();
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Configure Identity with roles
@@ -37,14 +37,17 @@ builder.Services.AddIdentity<IdentityUser, ApplicationRole>(options =>
 
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = true;
+    options.SignIn.RequireConfirmedAccount = true;
 }).AddUserManager<UserManager<IdentityUser>>()
   .AddRoleManager<RoleManager<ApplicationRole>>()
  .AddRoles<ApplicationRole>()
- .AddEntityFrameworkStores<ApplicationDbContext>();
+ .AddEntityFrameworkStores<ApplicationDbContext>()
+  .AddDefaultTokenProviders();
 
 builder.Services.AddControllersWithViews();
 // Register the IRoleSeeder implementation
 builder.Services.AddTransient<IRoleSeeder, RoleSeeder>();
+builder.Services.AddTransient<IUserSeeder, UserSeeder>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -87,12 +90,12 @@ using (var scope = app.Services.CreateScope())
 
         //register service for DB tables
         var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-        var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
-    
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
         //register service for interfaces
-        var roleSeeder = services.GetRequiredService<IRoleSeeder>();
         var UserSeer = services.GetRequiredService<IUserSeeder>();
-    
+        var roleSeeder = services.GetRequiredService<IRoleSeeder>();
+
         //call Methods from service
         await UserSeer.SeedUsersAsync(userManager, roleManager, userDatas, passwords);
         await roleSeeder.SeedRolesAsync(roleManager);

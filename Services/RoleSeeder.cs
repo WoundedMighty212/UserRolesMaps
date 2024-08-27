@@ -6,15 +6,15 @@ namespace UserRolesMaps.Services
 {
     public class RoleSeeder : IRoleSeeder
     {
-        public async Task SeedRolesAsync(RoleManager<ApplicationRole> roleManager)
+        public async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             if (!await roleManager.RoleExistsAsync("Admin"))
             {
-                await roleManager.CreateAsync(new ApplicationRole { Name = "Admin" });
+                await roleManager.CreateAsync(new IdentityRole { Name = "Admin" });
             }
             if (!await roleManager.RoleExistsAsync("User"))
             {
-                await roleManager.CreateAsync(new ApplicationRole { Name = "User" });
+                await roleManager.CreateAsync(new IdentityRole { Name = "User" });
             }
         }
     }

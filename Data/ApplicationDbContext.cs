@@ -10,6 +10,5 @@ namespace UserRolesMaps.Data
             : base(options)
         {
         }
-        public DbSet<ApplicationUser> applicationUser { get; set; }
     }
 }

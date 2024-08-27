@@ -5,6 +5,6 @@ namespace UserRolesMaps.InterFaces
 {
     public interface IRoleSeeder
     {
-        Task SeedRolesAsync(RoleManager<ApplicationRole> roleManager);
+        Task SeedRolesAsync(RoleManager<IdentityRole> roleManager);
     }
 }
