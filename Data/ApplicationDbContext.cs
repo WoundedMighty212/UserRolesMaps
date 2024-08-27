@@ -10,5 +10,7 @@ namespace UserRolesMaps.Data
             : base(options)
         {
         }
+        public DbSet<UserRolesMaps.Models.CustomUsers> CustomUsers { get; set; } = default!;
+        public DbSet<UserRolesMaps.Models.CustomRoles> CustomRoles { get; set; } = default!;
     }
 }
