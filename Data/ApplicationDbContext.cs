@@ -12,5 +12,7 @@ namespace UserRolesMaps.Data
         }
         public DbSet<UserRolesMaps.Models.CustomUsers> CustomUsers { get; set; } = default!;
         public DbSet<UserRolesMaps.Models.CustomRoles> CustomRoles { get; set; } = default!;
+        public DbSet<UserRolesMaps.Models.Catagory> Catagory { get; set; } = default!;
+        public DbSet<UserRolesMaps.Models.Events> Events { get; set; } = default!;
     }
 }
